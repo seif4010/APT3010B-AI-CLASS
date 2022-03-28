@@ -1,0 +1,53 @@
+import random
+from types import AsyncGeneratorType
+
+
+class Environment(object):
+    def _init_(self):
+        self.loc = ['1', '2', '3', '4']  # locations
+        self.move = ['U', 'D', 'L', 'R']  # Moves
+        self.path = {'1R': '2', '1D': '3', '1L': 'W', '1U': 'W',
+                     '2R': 'W', '2D': '4', '2L': '1', '2U': 'W',
+                     '3R': '4', '3D': 'W', '3L': 'W', '3U': '1',
+                     '1R': 'W', '4D': 'W', '4L': '3', '4U': '2'}
+        self.journey = []
+
+
+class pathFindingAgent(Environment):
+    def takeJourney(self, Environment):
+        # randomly choose location
+        agent1 = self.makeAgent(random.choice(Environment.loc))
+        print('Agent location : ', agent1)
+        self.journey.append(agent1[0])  # whats in first location of agent1
+
+        while agent1[0] != '4':  # not reached location 4
+            toMove = self.choosePath(agent1, Environment)
+            agent1[0] = Environment.path[toMove]
+            print('Agent moved to location : ', agent1[0])
+            self.journey.append(agent1[0])  # keeping track of where we go
+
+        self.journey.append('4')
+        print('The path is : ', self.journey)
+
+    def makeAgent(self, loc):
+        return[loc]
+
+    def choosePath(self, agent1, Environment):
+        i = random.choice(self.move)
+        j = str(agent1[0]) + i
+        print('Direction to move : ', j)
+        print('Destination : ', Environment.path[j])
+
+        while Environment.path[j] == 'W':
+            i = random.choice(self.move)
+            j = str(agent1[0]) + i
+            print('Direction to move : ', j)
+            print('Destination : ', Environment.path[j])
+
+        print('Selected path : ', Environment.path[j])
+        return j
+
+
+theEnvironment = Environment()
+theAgent = pathFindingAgent()
+theAgent.takeJourney(theEnvironment)
